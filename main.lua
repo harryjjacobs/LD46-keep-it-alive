@@ -5,6 +5,7 @@ local gameState = require("data/gamestate")
 local uiOverlay = require("scenes/uioverlay")
 local game = require("scenes/game")
 local gameOver = require("scenes/gameover")
+local paused = require("scenes/paused")
 
 function love.load()
     fonts:load()
@@ -14,13 +15,15 @@ function love.load()
 end
 
 function love.update(dt)
-    if gameState:get() == gameState.MENU then
+    if isPaused then return end
 
+    if gameState:get() == gameState.MENU then
+        
     elseif gameState:get() == gameState.PLAYING then
         game:update(dt)
         uiOverlay:update(dt)
     elseif gameState:get() == gameState.PAUSED then
-
+        paused:update(dt)
     elseif gameState:get() == gameState.GAME_OVER then
         --show losing screen
         gameOver:update(dt)
@@ -38,7 +41,9 @@ function love.draw()
         game:render()
         uiOverlay:render()
     elseif gameState:get() == gameState.PAUSED then
-
+        game:render()
+        uiOverlay:render()
+        paused:render()
     elseif gameState:get() == gameState.GAME_OVER then
         game:render()
         --show losing screen above game
@@ -55,7 +60,8 @@ function love.mousepressed(x, y, button, istouch)
         game:onMousePressed(x, y, button, istouch)
         uiOverlay:onMousePressed(x, y, button, istouch)
     elseif gameState:get() == gameState.PAUSED then
-
+        paused:onMousePressed(x, y, button, istouch)
+        uiOverlay:onMousePressed(x, y, button, istouch)
     elseif gameState:get() == gameState.GAME_OVER then
         gameOver:onMousePressed(x, y, button, istouch)
     end
@@ -75,6 +81,7 @@ function startGame()
     game:init()
     uiOverlay:init()
     gameOver:init()
+    paused:init()
 
     --set the background color to a soothing blue
     love.graphics.setBackgroundColor(0.41, 0.53, 0.97)
@@ -89,6 +96,7 @@ function stopGame()
     game:deinit()
     uiOverlay:deinit()
     gameOver:deinit()
+    paused:deinit()
 
     gameState:reset()
 end

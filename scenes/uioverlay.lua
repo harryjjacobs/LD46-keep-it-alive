@@ -12,6 +12,13 @@ local uiOverlay = {
 
 function uiOverlay:init()
     self.playPauseButton = button:create(self.PAUSE_TEXT, 10, 10, 200, 50, fonts.small)
+    self.playPauseButton:addClickListener(function()
+        if gameState:get() == gameState.PLAYING then
+            gameState:set(gameState.PAUSED)
+        elseif gameState:get() == gameState.PAUSED then
+            gameState:set(gameState.PLAYING)
+        end
+    end)
 end
 
 function uiOverlay:deinit()
@@ -25,16 +32,15 @@ end
 function uiOverlay:render()
     if gameState:get() == gameState.PLAYING then
         self:drawScore()
+        self.playPauseButton:setText(self.PAUSE_TEXT)
     elseif gameState:get() == gameState.PAUSED then
-        
+        self.playPauseButton:setText(self.PLAY_TEXT)
     end
     self.playPauseButton:render()
 end
 
 function uiOverlay:onMousePressed(x, y, button, istouch)
-    if button == 1 or istouch then -- left click
-        display:screen2world(x, y)
-    end
+    self.playPauseButton:onMousePressed(x, y, button, istouch)
 end
 
 function uiOverlay:drawScore()
@@ -53,6 +59,10 @@ end
 function uiOverlay:getTextHeight()
     local font = love.graphics.getFont()
     return font:getHeight()
+end
+
+function uiOverlay:onPauseClicked()
+
 end
 
 return uiOverlay
