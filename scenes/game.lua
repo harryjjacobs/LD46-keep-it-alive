@@ -1,6 +1,9 @@
-require("entities/ball")
-require("entities/ground")
-require("utils/collisionmanager")
+ball = require("entities/ball")
+ground = require("entities/ground")
+powerupManager = require("entities/powerupmanager")
+solidGround = require("entities/powerups/solidground")
+gameState = require("data/gamestate")
+collisionManager = require("utils/collisionmanager")
 
 game = {}
 
@@ -13,11 +16,12 @@ function game:init()
 
     ball:init(self.world)
     ground:init(self.world)
+    powerupManager:init(self.world)
 
     collisionManager:init(self.world)
     collisionManager:addListener(ground.fixture, function(a, b, coll)
         if b == ball.fixture then
-            state = STATE.GAME_OVER
+            gameState.state = gameState.GAME_OVER
         end
     end)
 end
@@ -27,13 +31,18 @@ function game:update(dt)
     --update entities
     ball:update(dt)
     ground:update(dt)
+    solidGround:update(dt)
+    powerupManager:update(dt)
 end
 
 function game:render()
     ball:render()
     ground:render()
+    powerupManager:render()
 end
 
 function game:onMousePressed(x, y, button, istouch)
-    ball:onMousePressed(x, y, button, istouch)
+    if gameState.state == gameState.PLAYING then
+        ball:onMousePressed(x, y, button, istouch)
+    end
 end

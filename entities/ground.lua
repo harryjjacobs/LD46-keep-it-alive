@@ -1,6 +1,6 @@
-require("data/display")
+local display = require("data/display")
 
-ground = {}
+local ground = {}
  
 function ground:init(world)
     self.body = love.physics.newBody(world, display.GAME_WIDTH / 2, display.GAME_HEIGHT - 50 / 2) --remember, the shape (the rectangle we create next) anchors to the body from its center, so we have to move it to (650/2, 650-50/2)
@@ -21,3 +21,5 @@ end
 function ground:onCollisionWith(fixture, callback)
     self.notifyCollision[fixture] = callback
 end
+
+return ground

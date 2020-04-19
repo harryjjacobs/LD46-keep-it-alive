@@ -1,4 +1,4 @@
-collisionManager = {}
+local collisionManager = {}
 
 function collisionManager:init(world)
     self.world = world
@@ -45,3 +45,5 @@ end
 function collisionManager:postSolve(a, b, coll, normalimpulse, tangentimpulse)
 
 end
+
+return collisionManager

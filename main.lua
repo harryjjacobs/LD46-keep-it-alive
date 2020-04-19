@@ -1,31 +1,33 @@
-require("data/display")
-require("data/fonts")
+local display = require("data/display")
+local fonts = require("data/fonts")
+local images = require("data/images")
+local uiOverlay = require("scenes/uioverlay")
+local gameState = require("data/gamestate")
 require("scenes/game")
-require("scenes/uioverlay")
-require("data/gamestate")
 
 function love.load()
     fonts:load()
+    images:load()
 
     game:init()
     uiOverlay:init()
 
     --set the background color to a soothing blue
     love.graphics.setBackgroundColor(0.41, 0.53, 0.97)
-    display.updateTransformation()
+    display:updateTransformation()
 
-    gameState = STATE.PLAYING
+    gameState.state = gameState.PLAYING
 end
 
 function love.update(dt)
-    if gameState == STATE.MENU then
+    if gameState.state == gameState.MENU then
 
-    elseif gameState == STATE.PLAYING then
+    elseif gameState.state == gameState.PLAYING then
         game:update(dt)
         uiOverlay:update(dt)
-    elseif gameState == STATE.PAUSED then
+    elseif gameState.state == gameState.PAUSED then
 
-    elseif gameState == STATE.GAME_OVER then
+    elseif gameState.state == gameState.GAME_OVER then
         --show losing screen
     end
 end
@@ -48,7 +50,7 @@ end
 
 --for maintaining aspect ratio
 function love.resize(w, h)
-    display.updateTransformation()
+    display:updateTransformation()
 end
 
 --pause the game when focus is lost

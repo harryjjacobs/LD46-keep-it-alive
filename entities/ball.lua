@@ -1,6 +1,7 @@
-require("data/display")
+local display = require("data/display")
+local gameData = require("data/gamedata")
 
-ball = {}
+local ball = {}
  
 function ball:init(world)
     self.body = love.physics.newBody(world, display.GAME_WIDTH/2, display.GAME_HEIGHT/2, "dynamic") --place the body in the center of the world and make it dynamic, so it can move around
@@ -25,12 +26,15 @@ end
 
 function ball:onMousePressed(x, y, button, istouch)
     if button == 1 or istouch then -- left
-        if self.fixture:testPoint(display.screen2world(x, y)) then
+        if self.fixture:testPoint(display:screen2world(x, y)) then
             local velX, velY = self.body:getLinearVelocity()
-            local posX, posY = display.world2screen(self.body:getPosition())
-            velX = (posX - x) * display.graphicsTransf.scale * 10
+            local posX, posY = display:world2screen(self.body:getPosition())
+            velX = (posX - x) / display.graphicsTransf.scale * 10
             velY = -600
             self.body:setLinearVelocity(velX, velY)
+            gameData.score = gameData.score + 1
         end
     end
 end
+
+return ball
