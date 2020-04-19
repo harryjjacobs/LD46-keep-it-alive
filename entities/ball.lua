@@ -32,6 +32,7 @@ function ball:onMousePressed(x, y, button, istouch)
             velX = (posX - x) / display.graphicsTransf.scale * 10
             velY = -600
             self.body:setLinearVelocity(velX, velY)
+            self.body:setAngularVelocity(velX * 0.1)
             gameData.score = gameData.score + 1
         end
     end
