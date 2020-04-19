@@ -1,11 +1,14 @@
 local display = require("data/display")
 
-local ground = {}
+local ground = {
+    HEIGHT = 50
+}
  
 function ground:init(world)
-    self.body = love.physics.newBody(world, display.GAME_WIDTH / 2, display.GAME_HEIGHT - 50 / 2) --remember, the shape (the rectangle we create next) anchors to the body from its center, so we have to move it to (650/2, 650-50/2)
-    self.shape = love.physics.newRectangleShape(display.GAME_WIDTH, 50) --make a rectangle with a width of 650 and a height of 50
+    self.body = love.physics.newBody(world, display.GAME_WIDTH / 2, display.GAME_HEIGHT + self.HEIGHT / 2)
+    self.shape = love.physics.newRectangleShape(display.GAME_WIDTH, self.HEIGHT) --make a rectangle with a width of 650 and a height of 50
     self.fixture = love.physics.newFixture(self.body, self.shape) --attach shape to body
+    self:setIsBouncable(false)
     self.notifyCollision = {}
 end
 
@@ -20,6 +23,16 @@ end
 
 function ground:onCollisionWith(fixture, callback)
     self.notifyCollision[fixture] = callback
+end
+
+--whether or not to behave as a bouncable ground
+function ground:setIsBouncable(state)
+    self.isBouncable = state
+    if (self.isBouncable) then
+        self.body:setY(display.GAME_HEIGHT - self.HEIGHT / 2)
+    else
+        self.body:setY(display.GAME_HEIGHT + self.HEIGHT / 2)
+    end
 end
 
 return ground

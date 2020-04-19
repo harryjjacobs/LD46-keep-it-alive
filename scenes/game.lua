@@ -20,7 +20,7 @@ function game:init()
 
     collisionManager:init(self.world)
     collisionManager:addListener(ground.fixture, function(a, b, coll)
-        if b == ball.fixture then
+        if not ground.isBouncable and b == ball.fixture then
             gameState.state = gameState.GAME_OVER
         end
     end)
