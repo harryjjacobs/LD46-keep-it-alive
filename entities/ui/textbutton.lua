@@ -1,4 +1,5 @@
 local bounds = require("utils/boundingbox")
+local display = require("data/display")
 
 local textButton = {}
 
@@ -6,6 +7,7 @@ function textButton:create(text, x, y, width, height, font)
     button = {}
     setmetatable(button, self)
     self.__index = self
+    button._listeners = {}
     button._text = text
     button._x = x
     button._y = y
@@ -35,6 +37,20 @@ end
 
 function textButton:update(dt)
 
+end
+
+function textButton:addClickListener(callback)
+    table.insert(self._listeners, callback)
+end
+
+function textButton:onMousePressed(x, y, button, istouch)
+    if button == 1 or istouch then -- left
+        if self:isPointInside(display:screen2world(x, y)) then
+            for i, cb in ipairs(self._listeners) do
+                cb()
+            end
+        end
+    end
 end
 
 function textButton:setSize(width, height)
@@ -81,7 +97,7 @@ function textButton:getForegroundColor()
 end
 
 function textButton:isPointInside(x, y)
-    return isPointWithinBoundingBox({
+    return bounds:isPointWithinBoundingBox({
         { x = self._x, y = self._y },
         { x = self._x + self._width, y = self._y + self._width }
     }, x, y)
