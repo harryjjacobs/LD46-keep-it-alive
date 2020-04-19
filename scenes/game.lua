@@ -13,15 +13,14 @@ GAME_WORLD_METER = 64 --the height of a meter our worlds will be 64px
 
 function game:init()
     love.physics.setMeter(64) 
-    self.world = love.physics.newWorld(0, GAME_WORLD_GRAVITY * GAME_WORLD_METER, true) --create a world for the bodies to exist in with horizontal gravity of 0 and vertical gravity of 9.81
+    self.world = love.physics.newWorld(0, GAME_WORLD_GRAVITY * GAME_WORLD_METER, true) --create a world for the bodies to exist in
 
     gameData:init()
-
     ball:init(self.world)
     ground:init(self.world)
     powerupManager:init(self.world)
     collisionManager:init(self.world)
-    
+
     collisionManager:addListener(ground.fixture, function(a, b, coll)
         if not ground.isBouncable and b == ball.fixture then
             gameState:set(gameState.GAME_OVER)
