@@ -12,7 +12,7 @@ function love.load()
 
     --set the background color to a soothing blue
     love.graphics.setBackgroundColor(0.41, 0.53, 0.97)
-    setGraphicsTransformation()
+    display.updateTransformation()
 
     gameState = STATE.PLAYING
 end
@@ -32,8 +32,8 @@ end
 
 function love.draw()
     --for maintaining aspect ratio
-    love.graphics.translate(graphicsTransf.translation.x, graphicsTransf.translation.y)
-    love.graphics.scale(graphicsTransf.scale, graphicsTransf.scale)
+    love.graphics.translate(display.graphicsTransf.translation.x, display.graphicsTransf.translation.y)
+    love.graphics.scale(display.graphicsTransf.scale, display.graphicsTransf.scale)
     
     game:render()
     uiOverlay:render()
@@ -48,7 +48,7 @@ end
 
 --for maintaining aspect ratio
 function love.resize(w, h)
-    setGraphicsTransformation()
+    display.updateTransformation()
 end
 
 --pause the game when focus is lost

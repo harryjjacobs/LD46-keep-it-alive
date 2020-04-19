@@ -3,8 +3,8 @@ require("data/display")
 ground = {}
  
 function ground:init(world)
-    self.body = love.physics.newBody(world, GAME_WIDTH/2, GAME_HEIGHT-50/2) --remember, the shape (the rectangle we create next) anchors to the body from its center, so we have to move it to (650/2, 650-50/2)
-    self.shape = love.physics.newRectangleShape(GAME_WIDTH, 50) --make a rectangle with a width of 650 and a height of 50
+    self.body = love.physics.newBody(world, display.GAME_WIDTH / 2, display.GAME_HEIGHT - 50 / 2) --remember, the shape (the rectangle we create next) anchors to the body from its center, so we have to move it to (650/2, 650-50/2)
+    self.shape = love.physics.newRectangleShape(display.GAME_WIDTH, 50) --make a rectangle with a width of 650 and a height of 50
     self.fixture = love.physics.newFixture(self.body, self.shape) --attach shape to body
     self.notifyCollision = {}
 end
