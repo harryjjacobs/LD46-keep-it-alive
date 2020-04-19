@@ -99,7 +99,7 @@ end
 function textButton:isPointInside(x, y)
     return bounds:isPointWithinBoundingBox({
         { x = self._x, y = self._y },
-        { x = self._x + self._width, y = self._y + self._width }
+        { x = self._x + self._width, y = self._y + self._height }
     }, x, y)
 end
 

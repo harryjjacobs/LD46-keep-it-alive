@@ -6,12 +6,12 @@ local button = require("entities/ui/textbutton")
 
 local uiOverlay = {
     TEXT_COLOR = { 1, 1, 1 },
-    PAUSE_TEXT = "|  |",
-    PLAY_TEXT = ">",
+    PAUSE_TEXT = " | | ",
+    PLAY_TEXT = " > ",
 }
 
 function uiOverlay:init()
-    self.playPauseButton = button:create(self.PAUSE_TEXT, 10, 10, 200, 50, fonts.small)
+    self.playPauseButton = button:create(self.PAUSE_TEXT, 10, 10, 41, 50, fonts.small)
     self.playPauseButton:addClickListener(function()
         if gameState:get() == gameState.PLAYING then
             gameState:set(gameState.PAUSED)
