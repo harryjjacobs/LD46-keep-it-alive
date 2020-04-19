@@ -9,18 +9,24 @@ function uiOverlay:init()
     self.TEXT_COLOR = { 1, 1, 1 }
 end
 
+function uiOverlay:deinit()
+    
+end
+
 function uiOverlay:update(dt)
 
 end
 
 function uiOverlay:render()
-    if gameState.state == gameState.PLAYING then
+    if gameState:get() == gameState.PLAYING then
         love.graphics.setFont(fonts.small)
         love.graphics.setColor(self.TEXT_COLOR)
         love.graphics.print("|  |", 10, 10, 0, 1, 1)
         self:drawScore()
-    else
-
+    elseif gameState:get() == gameState.PAUSED then
+        love.graphics.setFont(fonts.small)
+        love.graphics.setColor(self.TEXT_COLOR)
+        love.graphics.print(">", 10, 10, 0, 1, 1)
     end
 end
 
