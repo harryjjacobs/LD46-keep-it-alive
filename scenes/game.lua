@@ -16,11 +16,12 @@ function game:init()
     self.world = love.physics.newWorld(0, GAME_WORLD_GRAVITY * GAME_WORLD_METER, true) --create a world for the bodies to exist in with horizontal gravity of 0 and vertical gravity of 9.81
 
     gameData:init()
+
     ball:init(self.world)
     ground:init(self.world)
     powerupManager:init(self.world)
-
     collisionManager:init(self.world)
+    
     collisionManager:addListener(ground.fixture, function(a, b, coll)
         if not ground.isBouncable and b == ball.fixture then
             gameState:set(gameState.GAME_OVER)
