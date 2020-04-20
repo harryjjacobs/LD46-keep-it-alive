@@ -4,6 +4,7 @@ powerupManager = require("entities/powerupmanager")
 solidGround = require("entities/powerups/solidground")
 gameState = require("data/gamestate")
 gameData = require("data/gamedata")
+display = require("data/display")
 collisionManager = require("utils/collisionmanager")
 
 local game = {}
@@ -42,6 +43,9 @@ function game:update(dt)
 end
 
 function game:render()
+    --render background
+    love.graphics.setColor(0.3, 0.46, 0.87)
+    love.graphics.rectangle("fill", 0, 0, display.GAME_WIDTH, display.GAME_HEIGHT)
     ball:render()
     ground:render()
     powerupManager:render()
