@@ -1,4 +1,4 @@
-local powerup = require("entities/powerups/powerupbase")
+local powerup = require("nodes/powerups/powerupbase")
 local images = require("data/images")
 
 local solidGround = powerup:create(
@@ -7,7 +7,9 @@ local solidGround = powerup:create(
 )
 
 function solidGround:update(dt)
-    --called when the powerup has been activated
+    if self.activated then
+        
+    end
 end
 
 return solidGround

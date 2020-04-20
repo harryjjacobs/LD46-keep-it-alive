@@ -1,9 +1,11 @@
 local display = require("data/display")
 local gameData = require("data/gamedata")
+local node = require("nodes/node")
 
-local ball = {}
+local ball = node:create()
  
 function ball:init(world)
+    node.init(self)
     self.body = love.physics.newBody(world, display.GAME_WIDTH/2, display.GAME_HEIGHT/2, "dynamic") --place the body in the center of the world and make it dynamic, so it can move around
     self.shape = love.physics.newCircleShape(40) --the ball's shape has a radius of 20
     self.fixture = love.physics.newFixture(self.body, self.shape, 1) -- Attach fixture to body and give it a density of 0.1.
@@ -11,6 +13,7 @@ function ball:init(world)
 end
 
 function ball:update(dt)
+    node.update(self, dt)
     --wrap position around screen
     if self.body:getX() < 0 then
         self.body:setPosition(display.GAME_WIDTH, self.body:getY())
@@ -20,6 +23,7 @@ function ball:update(dt)
 end
 
 function ball:render()
+    node.render(self)
     love.graphics.setColor(0.76, 0.18, 0.05) --set the drawing color to red for the ball
     love.graphics.circle("fill", self.body:getX(), self.body:getY(), self.shape:getRadius())
 end

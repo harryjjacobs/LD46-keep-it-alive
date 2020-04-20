@@ -13,10 +13,9 @@ function textButton:create(text, x, y, width, height, font)
     button._y = y
     button._width = width
     button._height = height
-    button._padding = 5
     button._font = font
-    button._backgroundColor = { 0, 0, 0, 0 }    --transparent
-    button._foregroundColor = { 1, 1, 1, 1 }    --white
+    button._backgroundColor = { 0.2, 0.5, 0.5, 0 }    --transparent
+    button._foregroundColor = { 0.9, 0.9, 0.9, 1 }    --whiteish
     return button
 end
 
@@ -25,10 +24,11 @@ function textButton:render()
     love.graphics.rectangle("fill", self._x, self._y, self._width, self._height)
     love.graphics.setColor(self._foregroundColor)
     love.graphics.setFont(self._font or love.graphics.getFont())
+    local x, y = self:calculateTextPosition()
     love.graphics.print(
         self._text,
-        self._x + self._padding,
-        self._y + self._padding,
+        x,
+        y,
         0,  --rotation
         1,  --scale x
         1   --scale y
@@ -101,6 +101,14 @@ function textButton:isPointInside(x, y)
         { x = self._x, y = self._y },
         { x = self._x + self._width, y = self._y + self._height }
     }, x, y)
+end
+
+function textButton:calculateTextPosition()
+    local textWidth = self._font:getWidth(self._text)
+    local textHeight = self._font:getHeight()
+    local x = self._x + ((self._width) - textWidth) / 2
+    local y = self._y + ((self._height) - textHeight) / 2
+    return x, y
 end
 
 return textButton

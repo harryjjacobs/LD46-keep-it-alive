@@ -1,34 +1,47 @@
 --Entry point for the game
-
+local game = require("nodes/game")
+local gameOver = require("nodes/gameover")
+local paused = require("nodes/pausedmenu")
+local uiOverlay = require("nodes/uioverlay")
 local display = require("data/display")
 local fonts = require("data/fonts")
 local images = require("data/images")
 local gameState = require("data/gamestate")
-local uiOverlay = require("scenes/uioverlay")
-local game = require("scenes/game")
-local gameOver = require("scenes/gameover")
-local paused = require("scenes/paused")
 
 function love.load()
     fonts:load()
     images:load()
 
+    nodes = {
+        game,
+        uiOverlay,
+        paused,
+        gameOver
+    }
+
     startGame()
 end
 
 function love.update(dt)
-    if isPaused then return end
-
     if gameState:get() == gameState.MENU then
 
     elseif gameState:get() == gameState.PLAYING then
-        game:update(dt)
-        uiOverlay:update(dt)
+        game:setActive(true)
+        uiOverlay:setActive(true)
     elseif gameState:get() == gameState.PAUSED then
-        paused:update(dt)
+        game:setActive(false)
+        paused:setActive(true)
     elseif gameState:get() == gameState.GAME_OVER then
+        game:setActive(false)
+        uiOverlay:setActive(false)
         --show losing screen
-        gameOver:update(dt)
+        gameOver:setActive(true)
+    end
+
+    for _, n in ipairs(nodes) do
+        if n:getActive() then
+            n:update(dt)
+        end
     end
 end
 
@@ -86,7 +99,9 @@ end
 
 --pause the game when focus is lost
 function love.focus(f)
-    isPaused = not f
+    if f == false then
+        gameState:set(gameState.PAUSED)
+    end
 end
 
 function startGame()
