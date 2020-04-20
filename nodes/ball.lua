@@ -6,7 +6,7 @@ local ball = node:create()
  
 function ball:init(world)
     node.init(self)
-    self.body = love.physics.newBody(world, display.GAME_WIDTH/2, display.GAME_HEIGHT/2, "dynamic") --place the body in the center of the world and make it dynamic, so it can move around
+    self.body = love.physics.newBody(world, display.GAME_WIDTH/2, display.GAME_HEIGHT/3, "dynamic") --place the body in the center of the world and make it dynamic, so it can move around
     self.shape = love.physics.newCircleShape(40) --the ball's shape has a radius of 20
     self.fixture = love.physics.newFixture(self.body, self.shape, 1) -- Attach fixture to body and give it a density of 0.1.
     self.fixture:setRestitution(0.9) --let the ball bounce
