@@ -1,3 +1,5 @@
+--Entry point for the game
+
 local display = require("data/display")
 local fonts = require("data/fonts")
 local images = require("data/images")
@@ -18,7 +20,7 @@ function love.update(dt)
     if isPaused then return end
 
     if gameState:get() == gameState.MENU then
-        
+
     elseif gameState:get() == gameState.PLAYING then
         game:update(dt)
         uiOverlay:update(dt)
@@ -34,6 +36,14 @@ function love.draw()
     --for maintaining aspect ratio
     love.graphics.translate(display.graphicsTransf.translation.x, display.graphicsTransf.translation.y)
     love.graphics.scale(display.graphicsTransf.scale, display.graphicsTransf.scale)
+    --cut off anything outside the display window (to stop things
+    --being rendered in the margins caused by the aspect ratio fitting)
+    love.graphics.setScissor(
+        display.graphicsTransf.translation.x,
+        display.graphicsTransf.translation.y,
+        display.GAME_WIDTH * display.graphicsTransf.scale,
+        display.GAME_HEIGHT * display.graphicsTransf.scale
+    )
 
     if gameState:get() == gameState.MENU then
 
@@ -49,6 +59,8 @@ function love.draw()
         --show losing screen above game
         gameOver:render()
     end
+
+    love.graphics.setScissor()
 end
 
 --forward mouse presses
@@ -83,8 +95,7 @@ function startGame()
     gameOver:init()
     paused:init()
 
-    --set the background color to a soothing blue
-    love.graphics.setBackgroundColor(0.41, 0.53, 0.97)
+    love.graphics.setBackgroundColor(0.1, 0.1, 0.15)
     display:updateTransformation()
 
     gameState:addChangeListener(gameState.GAME_OVER, gameState.PLAYING, onRestart)
