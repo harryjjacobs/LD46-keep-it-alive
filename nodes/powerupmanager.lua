@@ -18,7 +18,7 @@ function powerupManager:deinit()
 end
 
 function powerupManager:update(dt)
-    node.update(self)
+    node.update(self, dt)
     self:checkSpawn()
     self:checkDespawn()
 end
@@ -55,7 +55,8 @@ end
 
 function powerupManager:spawn(powerup)
     local entity = powerup.entity:create()
-    entity:init(self.world)
+    entity:init(self.world, powerup.effectDuration)
+    node.addChild(self, entity)
     self.despawnTimes[entity] = love.timer.getTime() + powerup.lifespan
 end
 
