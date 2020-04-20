@@ -1,4 +1,5 @@
 --Entry point for the game
+local mainMenu = require("nodes/mainmenu")
 local game = require("nodes/game")
 local gameOver = require("nodes/gameover")
 local paused = require("nodes/pausedmenu")
@@ -12,19 +13,29 @@ function love.load()
     fonts:load()
     images:load()
 
+    mainMenu:init()
+
     nodes = {
+        mainMenu,
         game,
         uiOverlay,
         paused,
         gameOver
     }
 
-    startGame()
+    gameState:set(gameState.MENU)
+    gameState:addChangeListener(gameState.MENU, gameState.PLAYING, startGame)
+
+    --startGame()
 end
 
 function love.update(dt)
     if gameState:get() == gameState.MENU then
-
+        mainMenu:setActive(true)
+        game:setActive(false)
+        paused:setActive(false)
+        uiOverlay:setActive(false)
+        gameOver:setActive(false)
     elseif gameState:get() == gameState.PLAYING then
         game:setActive(true)
         uiOverlay:setActive(true)
@@ -59,7 +70,7 @@ function love.draw()
     )
 
     if gameState:get() == gameState.MENU then
-
+        mainMenu:render()
     elseif gameState:get() == gameState.PLAYING then
         game:render()
         uiOverlay:render()
@@ -80,7 +91,7 @@ end
 --todo put in separate file
 function love.mousepressed(x, y, button, istouch)
     if gameState:get() == gameState.MENU then
-
+        mainMenu:onMousePressed(x, y, button, istouch)
     elseif gameState:get() == gameState.PLAYING then
         game:onMousePressed(x, y, button, istouch)
         uiOverlay:onMousePressed(x, y, button, istouch)
