@@ -1,13 +1,19 @@
 local display = {
-    GAME_WIDTH = 1024,
-    GAME_HEIGHT = 768,
-
     -- For maintaining aspect ratio
     graphicsTransf = {
         scale = 1.0,
         translation = { x = 0.0, y = 0.0 }
     }
 }
+
+--configure game size based on platform
+if love.system.getOS() == 'iOS' or love.system.getOS() == 'Android' then
+    display.GAME_WIDTH = 900
+    display.GAME_HEIGHT = 1792
+else
+    display.GAME_WIDTH = 1024
+    display.GAME_HEIGHT = 768
+end
 
 function display:updateTransformation()
     w, h = love.graphics.getDimensions()
