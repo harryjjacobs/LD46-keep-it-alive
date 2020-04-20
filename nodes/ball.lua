@@ -7,7 +7,7 @@ local ball = node:create()
 function ball:init(world)
     node.init(self)
     self.body = love.physics.newBody(world, display.GAME_WIDTH/2, display.GAME_HEIGHT/3, "dynamic") --place the body in the center of the world and make it dynamic, so it can move around
-    self.shape = love.physics.newCircleShape(40) --the ball's shape has a radius of 20
+    self.shape = love.physics.newCircleShape(50) --the ball's shape has a radius of 20
     self.fixture = love.physics.newFixture(self.body, self.shape, 1) -- Attach fixture to body and give it a density of 0.1.
     self.fixture:setRestitution(0.9) --let the ball bounce
     self.image = love.graphics.newImage("assets/images/balls/Ball.png")
@@ -25,8 +25,8 @@ end
 
 function ball:render()
     node.render(self)
-    love.graphics.setColor(0.76, 0.18, 0.05) --set the drawing color to red for the ball
-    love.graphics.draw(ball.image, self.body:getX(), self.body:getY(), self.shape:getRadius(), 0.1, 0.1, ball.image:getWidth()/2, ball.image:getHeight()/2)
+    love.graphics.setColor(1, 1, 1) --set the drawing color to red for the ball
+    love.graphics.draw(ball.image, self.body:getX(), self.body:getY(), self.body:getAngle(), 0.084, 0.084, ball.image:getWidth()/2, ball.image:getHeight()/2)
     --love.graphics.circle("fill", self.body:getX(), self.body:getY(), self.shape:getRadius())
 end
 
@@ -38,7 +38,7 @@ function ball:onMousePressed(x, y, button, istouch)
             velX = (posX - x) / display.graphicsTransf.scale * 10
             velY = -600
             self.body:setLinearVelocity(velX, velY)
-            self.body:setAngularVelocity(velX * 0.1)
+            self.body:setAngularVelocity(velX * 0.08)
             gameData.score = gameData.score + 1
         end
     end

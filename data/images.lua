@@ -4,7 +4,8 @@ local images = {
 
 function images:load()
     self.powerups = {
-        solidGround = love.graphics.newImage("assets/images/powerup_solidground.png")
+        solidGround = love.graphics.newImage("assets/images/powerups/PowerupGround.png"),
+        slowMotion = love.graphics.newImage("assets/images/powerups/PowerupDecreaseGameSpeed.png")
     }
 end
 

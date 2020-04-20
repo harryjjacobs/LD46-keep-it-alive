@@ -4,11 +4,11 @@ local inheritance = require("utils/inheritance")
 
 local powerup = inheritance:inheritsFrom(node)
 
-function powerup:init(world, effectDuration, size, drawable)
+function powerup:init(world, effectDuration, drawable)
     node.init(self)
     self.effectDuration = effectDuration
     print(size)
-    self.size = size
+    self.size = 20
     self.drawable = drawable
     local spawnx, spawny = self:randomSpawnPosition()
     self.body = love.physics.newBody(world, spawnx, spawny, "static") --place the body in the center of the world and make it static, so it cant move around
@@ -17,10 +17,8 @@ function powerup:init(world, effectDuration, size, drawable)
     self.fixture:setSensor(true)    --no collision resolution
     self.fixture:setRestitution(0.9) --let the ball bounce
     collisionManager:addListener(self.fixture, function(a, b, coll)
-        print("Collision")
         if b == ball.fixture then
             self.pendingActivation = true
-            --self:activate(self)
         end
     end)
 end
@@ -34,7 +32,6 @@ function powerup:deinit()
 end
 
 function powerup:activate()
-    print("Activate")
     self.activated = true
     self.activeTimeRemaining = self.effectDuration
     if self.onActivate then self.onActivate(self) end
@@ -54,19 +51,23 @@ function powerup:update(dt)
 
     if self.activated then
         self.activeTimeRemaining = self.activeTimeRemaining - dt
-
         if self.activeTimeRemaining <= 0 then
-            self.deactivate()
+            self:deactivate()
         end
     end
-    
 end
 
 function powerup:render()
     if not self.activated then
         --draw the powerup icon only when not yet activated
         love.graphics.setColor(0.76, 0.76, 0.76) --set the drawing color to white for the powerup
-        love.graphics.circle("fill", self.body:getX(), self.body:getY(), self.shape:getRadius())
+        love.graphics.draw(
+            ball.image, self.body:getX(), 
+            self.body:getY(), self.body:getAngle(),
+            0.5, 0.5,
+            self.drawable:getWidth()/2, self.drawable:getHeight()/2)
+        --love.graphics.circle("fill", self.body:getX(), self.body:getY(), self.shape:getRadius())
+
     end
 end
 

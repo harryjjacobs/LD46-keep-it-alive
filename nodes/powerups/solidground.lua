@@ -6,13 +6,13 @@ local inheritance = require("utils/inheritance")
 local solidGround = inheritance:inheritsFrom(powerup)
 
 function solidGround:init(world, effectDuration)
-    powerup.init(self, world, effectDuration, 20, images.powerups.solidGround)
+    powerup.init(self, world, effectDuration, images.powerups.solidGround)
 end
 
 function solidGround:update(dt)
     powerup.update(self, dt)
     if self.activated then
-
+        ground:setAlpha(self.activeTimeRemaining / self.effectDuration)
     end
 end
 
@@ -23,6 +23,7 @@ function solidGround:activate()
 end
 
 function solidGround:deactivate()
+    powerup.deactivate(self)
     ground:setIsBouncable(false)
 end
 
