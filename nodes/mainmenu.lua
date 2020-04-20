@@ -26,6 +26,7 @@ function mainMenu:render()
     node.render(self)
 
     self:drawTitle()
+    self:drawCredits()
 end
 
 function mainMenu:onMousePressed(x, y, button, istouch)
@@ -43,7 +44,16 @@ function mainMenu:drawTitle()
     local font = love.graphics.getFont()
     local textWidth = font:getWidth(text)
     local textHeight = font:getHeight()
-    love.graphics.print(text, display.GAME_WIDTH / 2 - textWidth / 2, display.GAME_HEIGHT / 2 - 50 - textHeight, 0, 1, 1)
+    love.graphics.print(text, display.GAME_WIDTH / 2 - textWidth / 2, display.GAME_HEIGHT / 2 - textHeight, 0, 1, 1)
+end
+
+function mainMenu:drawCredits()
+    love.graphics.setFont(fonts.small)
+    local text = "Programming: Harry Jacobs | Sound and art: Sam Pepper"
+    local font = love.graphics.getFont()
+    local textWidth = font:getWidth(text)
+    local textHeight = font:getHeight()
+    love.graphics.print(text, display.GAME_WIDTH / 2 - textWidth / 2, display.GAME_HEIGHT - textHeight, 0, 1, 1)
 end
 
 return mainMenu

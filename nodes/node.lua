@@ -13,6 +13,7 @@ end
 function node:init()
     self.childNodes = {}
     self.active = true
+    self.destroyed = false
 end
 
 function node:deinit()
@@ -21,6 +22,7 @@ function node:deinit()
             n:deinit()
         end
     end
+    self.destroyed = true
 end
 
 function node:render()

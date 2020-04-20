@@ -8,6 +8,7 @@ local display = require("data/display")
 local fonts = require("data/fonts")
 local images = require("data/images")
 local gameState = require("data/gamestate")
+local gameData = require("data/gamedata")
 
 function love.load()
     fonts:load()
@@ -51,7 +52,7 @@ function love.update(dt)
 
     for _, n in ipairs(nodes) do
         if n:getActive() then
-            n:update(dt)
+            n:update(dt * gameData.timeScale)
         end
     end
 end

@@ -12,8 +12,8 @@ end
 
 function powerupManager:deinit()
     node.deinit(self)
-    for i, p in ipairs(self.spawned) do
-        p.entity:deinit()
+    for entity, _ in pairs(self.despawnTimes) do
+        entity:deinit()
     end
 end
 
@@ -35,7 +35,18 @@ function powerupManager:checkSpawn()
             if gameData.score >= p.minScore and ((p[maxScore] == nil) or
                 (p[maxScore] ~= nil and p[maxScore] == nil)) then
                 if love.math.random() < p.chance then
-                    self:spawn(p)
+                    local exists = false
+                    for i, spawned in ipairs(self.childNodes) do
+                        print(spawned.id)
+                        print(p.entity)
+                        if spawned.id == p.entity then
+                            exists = true
+                            break
+                        end
+                    end
+                    if not exists then
+                        self:spawn(p)
+                    end
                 end
             end
         end
@@ -46,25 +57,26 @@ end
 
 function powerupManager:checkDespawn()
     --check whether we should despawn any powerups
-    for e, t in ipairs(self.despawnTimes) do
-        if t >= love.timer.getTime() then
+    for e, t in pairs(self.despawnTimes) do
+        if love.timer.getTime() >= t then
             self:despawn(e)
         end
     end
 end
 
 function powerupManager:spawn(powerup)
-    local entity = powerup.entity:create()
+    local entity = require(powerup.entity):create()
+    entity.id = "nodes/powerups/solidground"
     entity:init(self.world, powerup.effectDuration)
-    node.addChild(self, entity)
     self.despawnTimes[entity] = love.timer.getTime() + powerup.lifespan
+    node.addChild(self, entity)
 end
 
 function powerupManager:despawn(entity)
-    e:deinit()
+    if not entity.activated then entity:deinit() end
     --remove from tables
     node.removeChild(self, entity)
-    self.despawnTimes[e] = nil
+    self.despawnTimes[entity] = nil
 end
 
 return powerupManager
