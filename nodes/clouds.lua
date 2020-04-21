@@ -6,17 +6,17 @@ local images = require("data/images")
 local clouds = inheritance:inheritsFrom(node)
 
 local MAX_CLOUD_WIDTH = 200
-local MIN_CLOUD_SCALE = 0.1
-local MAX_CLOUD_SCALE = 0.3
+local MIN_CLOUD_SCALE = 5   -- must be integer
+local MAX_CLOUD_SCALE = 10  -- must be integer
 local NUM_CLOUDS = 7
 local MAX_CLOUD_Y = display.GAME_HEIGHT * 0.3
-local MIN_VELOCITY = 0.5
-local MAX_VELOCITY = 2
+local MIN_VELOCITY = 1      -- must be integer
+local MAX_VELOCITY = 4      -- must be integer
 
-cloud = {
+local cloud = {
     x = 0,
     y = 0,
-    scale = 1,
+    scale = 1.0,
     velocity = 0
 }
 
@@ -37,19 +37,16 @@ function clouds:init()
 
     for i = 1, NUM_CLOUDS do
         local x, y = self:randomCloudPosition()
-        table.insert(self.clouds, cloud:create(
-            x,
-            y,
-            self:randomCloudScale(),
-            self:randomCloudVelocity(self:randomCloudDirection())
-        ))
+        local scale = self:randomCloudScale()
+        local velocity = self:randomCloudVelocity(self:randomCloudDirection())
+        local c = cloud:create(x, y, scale, velocity)
+        table.insert(self.clouds, c)
     end
 end
 
 function clouds:update(dt)
     node.update(self, dt)
     for i, cloud in ipairs(self.clouds) do
-
         if self:isOutsideVisibleArea(cloud) then
             if cloud.velocity > 0 then
                 cloud.velocity = self:randomCloudVelocity(-1)
@@ -57,20 +54,20 @@ function clouds:update(dt)
                 cloud.velocity = self:randomCloudVelocity(1)
             end
         end
-
         cloud.x = cloud.x + cloud.velocity
     end
 end
 
 function clouds:render()
     node.render(self)
+    love.graphics.setColor(0.9, 0.9, 0.9, 0.8)
     for i, cloud in ipairs(self.clouds) do
         love.graphics.draw(images.environment.cloud, cloud.x, cloud.y, 0, cloud.scale, cloud.scale, 0, 0)
     end
 end
 
 function clouds:isOutsideVisibleArea(cloud)
-    return (cloud.x < MAX_CLOUD_WIDTH) or cloud.x > (display.GAME_WIDTH + MAX_CLOUD_WIDTH)
+    return (cloud.x < 0 - MAX_CLOUD_WIDTH) or cloud.x > (display.GAME_WIDTH + MAX_CLOUD_WIDTH)
 end
 
 function clouds:randomCloudPosition()
@@ -79,11 +76,11 @@ function clouds:randomCloudPosition()
 end
 
 function clouds:randomCloudScale()
-    return love.math.random(MIN_CLOUD_SCALE, MAX_CLOUD_SCALE)
+    return love.math.random(MIN_CLOUD_SCALE, MAX_CLOUD_SCALE) * 0.01
 end
 
 function clouds:randomCloudVelocity(direction)
-    return direction * love.math.random(MIN_VELOCITY, MAX_VELOCITY)
+    return direction * love.math.random(MIN_VELOCITY, MAX_VELOCITY) * 0.1
 end
 
 function clouds:randomCloudDirection()

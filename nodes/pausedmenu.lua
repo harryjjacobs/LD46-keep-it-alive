@@ -2,6 +2,7 @@ local node = require("nodes/node")
 local gameState = require("data/gamestate")
 local gameData = require("data/gamedata")
 local fonts = require("data/fonts")
+local sounds = require("data/sounds")
 local display = require("data/display")
 local textButton = require("nodes/ui/textbutton")
 

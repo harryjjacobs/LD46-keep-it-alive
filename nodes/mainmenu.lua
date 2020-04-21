@@ -3,6 +3,7 @@ local textButton = require("nodes/ui/textbutton")
 local display = require("data/display")
 local gameState = require("data/gamestate")
 local fonts = require("data/fonts")
+local images = require("data/images")
 
 local mainMenu = node:create()
 
@@ -20,11 +21,20 @@ function mainMenu:init()
 
     node.addChild(self, self.playButton)
     node.addChild(self, self.quitButton)
+
+    love.audio.play(sounds.music.title)
+end
+
+function mainMenu:setActive(active)
+    node.setActive(self, active)
+    if not active then
+        love.audio.stop(sounds.music.title)
+    end
 end
 
 function mainMenu:render()
+    love.graphics.draw(images.environment.background, 0, -500, 0, 0.6, 0.6, 0, 0)
     node.render(self)
-
     self:drawTitle()
     self:drawCredits()
 end

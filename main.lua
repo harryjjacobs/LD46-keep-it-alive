@@ -7,13 +7,15 @@ local uiOverlay = require("nodes/uioverlay")
 local display = require("data/display")
 local fonts = require("data/fonts")
 local images = require("data/images")
+local sounds = require("data/sounds")
 local gameState = require("data/gamestate")
 local gameData = require("data/gamedata")
 
 function love.load()
     fonts:load()
     images:load()
-
+    sounds:load()
+    
     mainMenu:init()
 
     nodes = {
@@ -38,12 +40,15 @@ function love.update(dt)
         uiOverlay:setActive(false)
         gameOver:setActive(false)
     elseif gameState:get() == gameState.PLAYING then
+        mainMenu:setActive(false)
         game:setActive(true)
         uiOverlay:setActive(true)
     elseif gameState:get() == gameState.PAUSED then
+        mainMenu:setActive(false)
         game:setActive(false)
         paused:setActive(true)
     elseif gameState:get() == gameState.GAME_OVER then
+        mainMenu:setActive(false)
         game:setActive(false)
         uiOverlay:setActive(false)
         --show losing screen

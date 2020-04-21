@@ -1,4 +1,5 @@
 local display = require("data/display")
+local sounds = require("data/sounds")
 local gameData = require("data/gamedata")
 local node = require("nodes/node")
 
@@ -39,7 +40,22 @@ function ball:onMousePressed(x, y, button, istouch)
             velY = -600
             self.body:setLinearVelocity(velX, velY)
             self.body:setAngularVelocity(velX * 0.08)
+
+            -- increment score
             gameData.score = gameData.score + 1
+
+            --play sound effect
+            love.audio.play(sounds.ball.bounce:clone())
+
+            --play high score sound effect
+            if gameData.score % 10 == 0 then
+                love.audio.play(sounds.general.yeah:clone())
+            end
+
+            -- play very high score sound effect
+            if gameData.score % 100 == 0 then
+                love.audio.play(sounds.general.hmmm:clone())
+            end
         end
     end
 end

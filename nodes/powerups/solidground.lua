@@ -1,6 +1,7 @@
 local powerup = require("nodes/powerups/powerupbase")
 local ground = require("nodes/ground")
 local images = require("data/images")
+local sounds = require("data/sounds")
 local inheritance = require("utils/inheritance")
 
 local solidGround = inheritance:inheritsFrom(powerup)
@@ -17,7 +18,7 @@ function solidGround:update(dt)
 end
 
 function solidGround:activate()
-    print("ACTIVATE")
+    love.audio.play(sounds.powerups.groundAppear:clone())
     powerup.activate(self)
     ground:setIsBouncable(true)
 end

@@ -37,8 +37,6 @@ function powerupManager:checkSpawn()
                 if love.math.random() < p.chance then
                     local exists = false
                     for i, spawned in ipairs(self.childNodes) do
-                        print(spawned.id)
-                        print(p.entity)
                         if spawned.id == p.entity then
                             exists = true
                             break

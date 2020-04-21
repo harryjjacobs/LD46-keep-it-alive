@@ -1,19 +1,19 @@
 local powerup = require("nodes/powerups/powerupbase")
 local images = require("data/images")
-local sounds = require("data/sounds")
 local gameData = require("data/gamedata")
+local sounds = require("data/sounds")
 local inheritance = require("utils/inheritance")
 
-local slowMotion = inheritance:inheritsFrom(powerup)
-local AMOUNT = 0.2
+local fastMotion = inheritance:inheritsFrom(powerup)
 
-function slowMotion:init(world, effectDuration)
-    powerup.init(self, world, effectDuration, images.powerups.slowMotion)
+local AMOUNT = 0.7
+
+function fastMotion:init(world, effectDuration)
+    powerup.init(self, world, effectDuration, images.powerups.fastMotion)
     self.world = world
-    self.playedDeactivationSound = false
 end
 
-function slowMotion:update(dt)
+function fastMotion:update(dt)
     powerup.update(self, dt)
 
     if self.activated then
@@ -24,11 +24,12 @@ function slowMotion:update(dt)
     end
 end
 
-function slowMotion:activate()
+function fastMotion:activate()
     powerup.activate(self)
-    love.audio.play(sounds.powerups.slowMotionActivate:clone())
-    local newTimeScale = gameData.timeScale - AMOUNT
-    if newTimeScale < 0.3 then
+    love.audio.play(sounds.powerups.slowMotionDectivate:clone())
+
+    local newTimeScale = gameData.timeScale + AMOUNT
+    if newTimeScale > 3 then
         self.applied = 1
     else
         gameData.timeScale = newTimeScale
@@ -36,9 +37,9 @@ function slowMotion:activate()
     end
 end
 
-function slowMotion:deactivate()
+function fastMotion:deactivate()
     powerup.deactivate(self)
-    gameData.timeScale = gameData.timeScale + self.applied
+    gameData.timeScale = gameData.timeScale - self.applied
 end
 
-return slowMotion
+return fastMotion

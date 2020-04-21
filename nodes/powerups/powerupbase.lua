@@ -18,12 +18,12 @@ function powerup:init(world, effectDuration, drawable)
     collisionManager:addListener(self.fixture, function(a, b, coll)
         if b == ball.fixture then
             self.pendingActivation = true
+            collisionManager:removeListener(self.fixture)
         end
     end)
 end
 
 function powerup:deinit()
-    collisionManager:removeListener(self.fixture)
     if not self.body:isDestroyed() then self.body:destroy() end
     node.deinit(self)
 end

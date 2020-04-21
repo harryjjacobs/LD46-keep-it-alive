@@ -7,6 +7,8 @@ clouds = require("nodes/clouds")
 gameState = require("data/gamestate")
 gameData = require("data/gamedata")
 display = require("data/display")
+sounds = require("data/sounds")
+images = require("data/images")
 collisionManager = require("utils/collisionmanager")
 
 local game = node:create()
@@ -31,6 +33,15 @@ function game:init()
             gameState:set(gameState.GAME_OVER)
         end
     end)
+
+    love.audio.play(sounds.music.main)
+end
+
+function game:setActive(active)
+    node.setActive(self, active)
+    if not active then
+        love.audio.stop(sounds.music.main)
+    end
 end
 
 function game:deinit()
@@ -53,6 +64,7 @@ function game:render()
     --render background
     love.graphics.setColor(0.3, 0.46, 0.87)
     love.graphics.rectangle("fill", 0, 0, display.GAME_WIDTH, display.GAME_HEIGHT)
+    love.graphics.draw(images.environment.background, 0, -400, 0, 0.6, 0.6, 0, 0)
     clouds:render()
     ball:render()
     ground:render()
