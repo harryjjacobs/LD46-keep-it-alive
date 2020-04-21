@@ -21,8 +21,8 @@ function sounds:load()
         hmmm = love.audio.newSource("assets/audio/1in1000.mp3", "static")
     }
 
-    self.music.title:isLooping(true)
-    self.music.main:isLooping(true)
+    self.music.title:setLooping(true)
+    self.music.main:setLooping(true)
     self.general.yeah:setVolume(0.07)
 end
 

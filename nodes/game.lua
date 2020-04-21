@@ -62,9 +62,9 @@ end
 function game:render()
     node.render(self)
     --render background
-    love.graphics.setColor(0.3, 0.46, 0.87)
-    love.graphics.rectangle("fill", 0, 0, display.GAME_WIDTH, display.GAME_HEIGHT)
-    love.graphics.draw(images.environment.background, 0, -400, 0, 0.6, 0.6, 0, 0)
+    --love.graphics.setColor(0.3, 0.46, 0.87)
+    --love.graphics.rectangle("fill", 0, 0, display.GAME_WIDTH, display.GAME_HEIGHT)
+    love.graphics.draw(images.environment.background, 0, -520, 0, 0.6, 0.6, 0, 0)
     clouds:render()
     ball:render()
     ground:render()

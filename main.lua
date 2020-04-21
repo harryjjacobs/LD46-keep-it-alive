@@ -116,7 +116,7 @@ end
 
 --pause the game when focus is lost
 function love.focus(f)
-    if f == false then
+    if f == false and gameState:get() == gameState.PLAYING then
         gameState:set(gameState.PAUSED)
     end
 end

@@ -33,7 +33,7 @@ function mainMenu:setActive(active)
 end
 
 function mainMenu:render()
-    love.graphics.draw(images.environment.background, 0, -500, 0, 0.6, 0.6, 0, 0)
+    love.graphics.draw(images.environment.background, 0, -520, 0, 0.6, 0.6, 0, 0)
     node.render(self)
     self:drawTitle()
     self:drawCredits()
